@@ -100,7 +100,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/emailjs.min.js"></script>
     <script>
         // Inisialisasi EmailJS dengan Public Key Anda
-        emailjs.init('YOUR_PUBLIC_KEY'); // Ganti dengan Public Key dari EmailJS
+        emailjs.init('service_kjo72jj'); // Ganti dengan Public Key dari EmailJS
 
         document.getElementById('orderForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -129,7 +129,7 @@
             };
 
             // Kirim email menggunakan EmailJS
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams) // Ganti dengan Service ID dan Template ID
+            emailjs.send('service_kjo72jj', 'o5g4n2d', templateParams) // Ganti dengan Service ID dan Template ID
                 .then(function(response) {
                     successMessage.textContent = 'Pemesanan berhasil dikirim! Kami akan menghubungi Anda segera.';
                     successMessage.style.display = 'block';
