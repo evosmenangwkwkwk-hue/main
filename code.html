@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemesanan Jasa Pembuatan Tugas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #e0f7fa, #b2ebf2); /* Gradien biru muda */
+            color: #01579b; /* Biru gelap untuk teks */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Putih transparan */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #0277bd; /* Biru muda gelap */
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #0277bd;
+        }
+        input, textarea {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #b2ebf2;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f1f8e9; /* Hijau muda untuk kontras */
+        }
+        button {
+            padding: 12px;
+            background-color: #0277bd; /* Biru muda */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #01579b; /* Biru lebih gelap saat hover */
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .success {
+            color: green;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pemesanan Jasa Pembuatan Tugas</h1>
+        <form id="orderForm">
+            <label for="name">Nama Lengkap:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="noAbsen">No Absen:</label>
+            <input type="number" id="noAbsen" name="no_absen" required>
+
+            <label for="taskType">Jenis Tugas:</label>
+            <input type="text" id="taskType" name="task_type" placeholder="Contoh: Esai, Laporan, dll." required>
+
+            <label for="description">Deskripsi Tugas:</label>
+            <textarea id="description" name="description" rows="4" placeholder="Jelaskan tugas Anda secara detail..." required></textarea>
+
+            <label for="deadline">Deadline:</label>
+            <input type="date" id="deadline" name="deadline" required>
+
+            <button type="submit">Kirim Pemesanan</button>
+        </form>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+        <div id="successMessage" class="success" style="display: none;"></div>
+    </div>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/emailjs.min.js"></script>
+    <script>
+        // Inisialisasi EmailJS dengan Public Key Anda
+        emailjs.init('YOUR_PUBLIC_KEY'); // Ganti dengan Public Key dari EmailJS
+
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const noAbsen = document.getElementById('noAbsen').value.trim();
+            const taskType = document.getElementById('taskType').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const deadline = document.getElementById('deadline').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            if (!name || !noAbsen || !taskType || !description || !deadline) {
+                errorMessage.textContent = 'Harap isi semua field yang wajib.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                return;
+            }
+
+            // Parameter untuk EmailJS (sesuai template Anda)
+            const templateParams = {
+                name: name,
+                no_absen: noAbsen,
+                task_type: taskType,
+                description: description,
+                deadline: deadline
+            };
+
+            // Kirim email menggunakan EmailJS
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams) // Ganti dengan Service ID dan Template ID
+                .then(function(response) {
+                    successMessage.textContent = 'Pemesanan berhasil dikirim! Kami akan menghubungi Anda segera.';
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    // Reset form
+                    document.getElementById('orderForm').reset();
+                }, function(error) {
+                    errorMessage.textContent = 'Terjadi kesalahan saat mengirim. Coba lagi.';
+                    errorMessage.style.display = 'block';
+                    successMessage.style.display = 'none';
+                });
+        });
+    </script>
+</body>
+</html>
